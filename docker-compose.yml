@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - /docker_project/postgres_data:/var/lib/postgresql/data/
+  web:
+    build: .
+    command: manage.py makemigrations
+    command: manage.py migrate
+    command: python manage.py runserver 0.0.0.0:7000
+    volumes:
+      - .:/code
+    ports:
+      - "7000:7000"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
